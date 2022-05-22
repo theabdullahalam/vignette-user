@@ -27,6 +27,8 @@ export default function HomePage({ ethprovider }: HomePageProps) {
     if (currentSection === 'latest') {
       fetchAllPhotographs();
     } else if (currentSection === 'subscriptions') {
+      const subs = getSubscriptions()
+      console.log(subs);
       setPhotographs([]);
     } else if (currentSection === 'view-account') {
       if (ethers.utils.isAddress(enteredAddress)) {
@@ -46,12 +48,21 @@ export default function HomePage({ ethprovider }: HomePageProps) {
         setPhotographs([..._photographs].reverse());
       } else {
         vignetteContract.getAllPhotographs().then((_photographs: any) => {
-          console.log(_photographs);
           setPhotographs([..._photographs].reverse());
         });
       }
     }
   };
+
+  const subscribeToAccount = (account: string) => {
+    let subscriptions: any = getSubscriptions();
+    localStorage.setItem('subscriptions', JSON.stringify([...subscriptions, account]))
+  };
+
+  const getSubscriptions = () => {
+    let _subscriptions: any = localStorage!.getItem('subscriptions') || '[]';
+    return JSON.parse(_subscriptions)
+  }
 
   return (
     <div className="HomePage">
@@ -94,17 +105,26 @@ export default function HomePage({ ethprovider }: HomePageProps) {
               setEnteredAddress(e.target.value);
             }}
           />
-          <button
-            className={ethers.utils.isAddress(enteredAddress) ? '' : 'invalid'}
-            disabled={!ethers.utils.isAddress(enteredAddress)}
-            onClick={(e: any) => {
-              if (ethers.utils.isAddress(enteredAddress)) {
-                fetchPhotographsFromChain(enteredAddress);
-              }
-            }}
-          >
-            Load
-          </button>
+          <div className="buttons">
+            <button
+              className={ethers.utils.isAddress(enteredAddress) ? '' : 'invalid'}
+              disabled={!ethers.utils.isAddress(enteredAddress)}
+              onClick={(e: any) => {
+                if (ethers.utils.isAddress(enteredAddress)) {
+                  fetchPhotographsFromChain(enteredAddress);
+                }
+              }}
+            >
+              Load
+            </button>
+            <button
+              onClick={(e: any) => {
+                subscribeToAccount(enteredAddress);
+              }}
+            >
+              Subscribe
+            </button>
+          </div>
         </div>
       ) : (
         <></>

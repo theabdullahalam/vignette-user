@@ -8,7 +8,7 @@
     border-bottom: 1px solid rgb(192, 192, 192);
 
     a {
-      
+
       margin-right: 2rem;
       cursor: pointer;
       color: rgb(139, 139, 139);
@@ -45,15 +45,22 @@
 
   }
 
-  button {
-    margin-top: 0.5rem;
+  .buttons{
+
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      margin-top: 0.5rem;
+    }
+  
+    button.invalid {
+      color: rgb(228, 228, 228);
+      cursor: default;
+      border: 1px solid rgb(228, 228, 228);
+    }
   }
 
-  button.invalid {
-    color: rgb(228, 228, 228);
-    cursor: default;
-    border: 1px solid rgb(228, 228, 228);
-  }
 
   .Feed {
     padding-left: 2rem;
