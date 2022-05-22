@@ -21,16 +21,26 @@ export default function HomePage({ ethprovider }: HomePageProps) {
   };
 
   useEffect(() => {
+    loadSectionPhotos()
+  }, [])
+
+  useEffect(() => {
     fetchAllPhotographs();
   }, [ethprovider]);
 
   useEffect(() => {
+    loadSectionPhotos()
+  }, [currentSection]);
+
+  useEffect(() => {
+    setIsSubscribed(getIsSubscribed(enteredAddress))
+  }, [enteredAddress])
+
+  const loadSectionPhotos = () => {
     if (currentSection === 'latest') {
       fetchAllPhotographs();
     } else if (currentSection === 'subscriptions') {
-      const subs = getSubscriptions();
-      console.log(subs);
-      setPhotographs([]);
+      fetchSubscriptionPhotographs()
     } else if (currentSection === 'view-account') {
       if (ethers.utils.isAddress(enteredAddress)) {
         fetchPhotographsFromChain(enteredAddress);
@@ -38,11 +48,7 @@ export default function HomePage({ ethprovider }: HomePageProps) {
         setPhotographs([]);
       }
     }
-  }, [currentSection]);
-
-  useEffect(() => {
-    setIsSubscribed(getIsSubscribed(enteredAddress))
-  }, [enteredAddress])
+  }
 
   const fetchPhotographsFromChain = async (account: string | undefined = undefined) => {
     if (ethprovider !== undefined) {
@@ -85,6 +91,28 @@ export default function HomePage({ ethprovider }: HomePageProps) {
 
   const getIsSubscribed = (account: string) => {
     return getSubscriptions().includes(account);
+  }
+
+  const fetchSubscriptionPhotographs = async () => {
+    if (ethprovider !== undefined) {
+
+      const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
+      const _subs = getSubscriptions();
+      
+      
+      const _photographs: any = [];
+
+      _subs.forEach(async (acc: string) => {        
+        const _ps: any = await vignetteContract.getPhotographs(acc);
+        if (_ps.length > 0){
+          _ps.forEach((p: any) => {
+            _photographs.push(p)
+          });
+        }
+        console.log('ssss', _photographs);
+      });
+      setPhotographs(_photographs);
+    }
   }
 
   return (
