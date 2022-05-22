@@ -1,0 +1,42 @@
+.Photograph{
+    
+  max-width: 95vw;
+  display: grid;
+
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto;
+  max-height: 95vh;
+  margin-bottom: 4rem;
+
+  img {
+    max-width: 100%;
+    max-height: 95vh;
+    height: auto;
+    box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+    // place-self: center end;
+  }
+
+  .info-section {
+    padding: 2rem;
+    margin-left: 2rem;
+    place-self: center start;
+
+    h3 {
+      color: rgb(192, 192, 192);
+    }
+
+    p {
+      font-style: italic;
+    }
+    
+    .buttons{
+      margin-top: 2rem;
+      .link-button{
+        margin-right: 1rem;
+      }
+    }
+  }
+
+}
