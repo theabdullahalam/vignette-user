@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import Feed from '../components/Feed';
 import '../styles/ProfilePage.scss';
-import Web3 from 'web3';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ProfilePageProps {
   currentAccount: string;
