@@ -14,6 +14,7 @@ export default function HomePage({ ethprovider }: HomePageProps) {
   const [currentSection, setCurrentSection] = useState<string>('latest');
   const [enteredAddress, setEnteredAddress] = useState<string>('');
   const [photographs, setPhotographs] = useState<any>([]);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
 
   const fetchAllPhotographs = async () => {
     await fetchPhotographsFromChain();
@@ -27,7 +28,7 @@ export default function HomePage({ ethprovider }: HomePageProps) {
     if (currentSection === 'latest') {
       fetchAllPhotographs();
     } else if (currentSection === 'subscriptions') {
-      const subs = getSubscriptions()
+      const subs = getSubscriptions();
       console.log(subs);
       setPhotographs([]);
     } else if (currentSection === 'view-account') {
@@ -38,6 +39,10 @@ export default function HomePage({ ethprovider }: HomePageProps) {
       }
     }
   }, [currentSection]);
+
+  useEffect(() => {
+    setIsSubscribed(getIsSubscribed(enteredAddress))
+  }, [enteredAddress])
 
   const fetchPhotographsFromChain = async (account: string | undefined = undefined) => {
     if (ethprovider !== undefined) {
@@ -56,12 +61,30 @@ export default function HomePage({ ethprovider }: HomePageProps) {
 
   const subscribeToAccount = (account: string) => {
     let subscriptions: any = getSubscriptions();
-    localStorage.setItem('subscriptions', JSON.stringify([...subscriptions, account]))
+    if (!getIsSubscribed(account)){
+      setSubscriptions([...subscriptions, account])
+      setIsSubscribed(true)
+    }
   };
+
+  const unsubscribeFromAccount = (account: string) => {
+    let subscriptions: any = getSubscriptions();
+    let new_subscriptions = subscriptions.filter((s: string) => s!==account);
+    setSubscriptions(new_subscriptions);
+    setIsSubscribed(false);
+  }
 
   const getSubscriptions = () => {
     let _subscriptions: any = localStorage!.getItem('subscriptions') || '[]';
-    return JSON.parse(_subscriptions)
+    return JSON.parse(_subscriptions);
+  };
+
+  const setSubscriptions = (subs: string[]) => {
+    localStorage.setItem('subscriptions', JSON.stringify(subs));
+  }
+
+  const getIsSubscribed = (account: string) => {
+    return getSubscriptions().includes(account);
   }
 
   return (
@@ -118,11 +141,17 @@ export default function HomePage({ ethprovider }: HomePageProps) {
               Load
             </button>
             <button
+              className={ethers.utils.isAddress(enteredAddress) ? '' : 'invalid'}
+              disabled={!ethers.utils.isAddress(enteredAddress)}
               onClick={(e: any) => {
-                subscribeToAccount(enteredAddress);
+                if (isSubscribed){
+                  unsubscribeFromAccount(enteredAddress);
+                }else{
+                  subscribeToAccount(enteredAddress);
+                }
               }}
             >
-              Subscribe
+              { isSubscribed ? 'Unsubscribe' : 'Subscribe' }
             </button>
           </div>
         </div>
