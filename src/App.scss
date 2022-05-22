@@ -50,3 +50,8 @@ button[disabled]{
     border: 1px solid rgb(24, 24, 24);
   }
 }
+
+input {
+  box-sizing: border-box;
+  padding: 0.5rem;
+}

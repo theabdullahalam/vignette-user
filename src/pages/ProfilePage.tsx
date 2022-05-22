@@ -18,7 +18,6 @@ export default function ProfilePage({ currentAccount, ethSigner, ethprovider }: 
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
   const [uploadedFile, setUploadedFile] = useState<File | undefined>();
   const [photographs, setPhotographs] = useState<any>([]);
-  const [lastHash, setLastHash] = useState<string>('');
 
   // metadata vars
   const [photograph_title, setPhotograph_title] = useState<string>('');
@@ -35,7 +34,7 @@ export default function ProfilePage({ currentAccount, ethSigner, ethprovider }: 
       }
     };
     _init();
-  }, [currentAccount, lastHash]);
+  }, [currentAccount]);
 
   const handleFileInputChange = async (e: any) => {
     const file = e.target.files![0];

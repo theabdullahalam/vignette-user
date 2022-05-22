@@ -1,0 +1,63 @@
+.HomePage {
+  
+  .sectionStrip{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgb(192, 192, 192);
+
+    a {
+      
+      margin-right: 2rem;
+      cursor: pointer;
+      color: rgb(139, 139, 139);
+
+      &:hover {
+        color: black;
+      }
+    }
+
+    a.selected {
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  .account-input-div {
+
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    margin-top: 1.5rem;
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      margin-top: 0.5rem;
+      min-width: 35rem;
+    }
+
+  }
+
+  button {
+    margin-top: 0.5rem;
+  }
+
+  button.invalid {
+    color: rgb(228, 228, 228);
+    cursor: default;
+    border: 1px solid rgb(228, 228, 228);
+  }
+
+  .Feed {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+}

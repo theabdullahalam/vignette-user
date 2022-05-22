@@ -8,6 +8,7 @@ import { getIpfsURL, uploadFile, vignette_abi, vignette_address } from './helper
 import Photograph from './components/Photograph';
 import Feed from './components/Feed';
 import ProfilePage from './pages/ProfilePage';
+import HomePage from './pages/HomePage';
 
 function App() {
   // states
@@ -53,6 +54,14 @@ function App() {
               currentAccount={currentAccount}
               ethSigner={ethSigner}
               ethprovider={ethprovider}
+            />
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <HomePage 
+            ethprovider={ethprovider}
             />
           }
         />
