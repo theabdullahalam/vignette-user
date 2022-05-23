@@ -8,9 +8,10 @@ import Feed from '../components/Feed';
 interface HomePageProps {
   // ethSigner: JsonRpcSigner | undefined;
   ethprovider: Web3Provider | undefined;
+  current_account: string;
 }
 
-export default function HomePage({ ethprovider }: HomePageProps) {
+export default function HomePage({ ethprovider, current_account }: HomePageProps) {
   const [currentSection, setCurrentSection] = useState<string>('latest');
   const [enteredAddress, setEnteredAddress] = useState<string>('');
   const [photographs, setPhotographs] = useState<any>([]);
@@ -83,15 +84,19 @@ export default function HomePage({ ethprovider }: HomePageProps) {
   }
 
   const getSubscriptions = () => {
-    let _subscriptions: any = localStorage!.getItem('subscriptions') || '[]';
-    return JSON.parse(_subscriptions);
+    const _subscriptions: any = JSON.parse(localStorage!.getItem('subscriptions') || '{}');
+    const _current_subs: any = _subscriptions[current_account];
+    return _current_subs === undefined ? [] : _current_subs;
   };
 
   const setSubscriptions = (subs: string[]) => {
-    localStorage.setItem('subscriptions', JSON.stringify(subs));
+    const _subscriptions: any = JSON.parse(localStorage!.getItem('subscriptions') || '{}');
+    _subscriptions[current_account] = subs;
+    localStorage.setItem('subscriptions', JSON.stringify(_subscriptions));
   }
 
   const getIsSubscribed = (account: string) => {
+    console.log(getSubscriptions());    
     return getSubscriptions().includes(account);
   }
 

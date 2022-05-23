@@ -59,11 +59,7 @@ function App() {
         />
         <Route
           path="/"
-          element={
-            <HomePage 
-            ethprovider={ethprovider}
-            />
-          }
+          element={<HomePage ethprovider={ethprovider} current_account={currentAccount} />}
         />
       </Routes>
     </div>
