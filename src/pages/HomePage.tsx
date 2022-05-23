@@ -37,9 +37,11 @@ export default function HomePage({ ethprovider }: HomePageProps) {
   }, [enteredAddress])
 
   const loadSectionPhotos = () => {
+    setPhotographs([])
     if (currentSection === 'latest') {
       fetchAllPhotographs();
     } else if (currentSection === 'subscriptions') {
+      setPhotographs([])
       fetchSubscriptionPhotographs()
     } else if (currentSection === 'view-account') {
       if (ethers.utils.isAddress(enteredAddress)) {
@@ -98,20 +100,25 @@ export default function HomePage({ ethprovider }: HomePageProps) {
 
       const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
       const _subs = getSubscriptions();
-      
-      
-      const _photographs: any = [];
 
-      _subs.forEach(async (acc: string) => {        
-        const _ps: any = await vignetteContract.getPhotographs(acc);
-        if (_ps.length > 0){
-          _ps.forEach((p: any) => {
-            _photographs.push(p)
-          });
-        }
-        console.log('ssss', _photographs);
+      let new_photographs: any = []
+
+      _subs.forEach(async (acc: string) => {
+        vignetteContract.getPhotographs(acc).then(
+          (res: any) => {
+            res.forEach((_pic: any ) => {
+              new_photographs = [...new_photographs, _pic]
+            })
+          }
+        )
+        .finally(
+          (s: any) => {
+            setPhotographs(new_photographs);
+          }
+        )
       });
-      setPhotographs(_photographs);
+
+      
     }
   }
 

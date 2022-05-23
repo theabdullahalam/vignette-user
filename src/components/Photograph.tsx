@@ -3,13 +3,12 @@ import '../styles/Photograph.scss'
 
 interface PhotographProps {
   photograph: any;
-  key: number;
 }
 
-export default function ({ photograph, key }: PhotographProps) {
+export default function ({ photograph }: PhotographProps) {
   return (
     <div className="Photograph">
-      <img src={getIpfsURL(photograph.image_cid)} key={key}></img>
+      <img src={getIpfsURL(photograph.image_cid)}></img>
       <div className="info-section">
         <h3>Info:</h3>
         <p>
