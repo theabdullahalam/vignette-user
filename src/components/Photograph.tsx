@@ -4,9 +4,10 @@ import '../styles/Photograph.scss';
 
 interface PhotographProps {
   photograph: any;
+  mKey: any;
 }
 
-export default function ({ photograph }: PhotographProps) {
+export default function ({ photograph, mKey }: PhotographProps) {
   const [metadata, setMetadata] = useState<any>({});
 
   useEffect(() => {

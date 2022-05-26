@@ -8,7 +8,7 @@ interface PhotographProps {
 export default function Feed({ photographs }: PhotographProps){
   return (
     <div className="Feed">
-      {photographs.map((p: any, i: number) => <Photograph photograph={p} key={i} />)}
+      {photographs.map((p: any, i: number) => <Photograph photograph={p} key={i} mKey={i} />)}
     </div>
   )
 }

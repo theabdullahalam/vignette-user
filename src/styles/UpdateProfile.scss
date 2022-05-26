@@ -1,0 +1,85 @@
+.UpdateProfile {
+
+  background: rgb(242, 242, 242);
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+  padding: 2rem;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  
+  .close-button {
+    align-self: flex-end;
+    font-weight: bold;
+    padding-bottom: 1rem;
+    cursor: pointer;
+  }
+
+  .note {
+    background: rgb(230, 230, 230);
+    padding: 1rem;
+    border-radius: 1rem;
+    font-style: italic;
+    color: rgb(42, 42, 42);
+    margin-bottom: 2rem;
+  }
+
+  .success-note{
+    border: 2px solid rgba(0, 128, 128, 0.338);
+    border-radius: 2rem;
+    align-self: flex-start;
+    padding: 1rem;
+    color: rgba(0, 128, 128, 0.681);
+    font-style: italic;
+    margin-bottom: 2rem;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+
+    .profile-pic-label{
+      margin-bottom: 1rem; 
+    }
+    .profile-pic-div {
+
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+
+
+      .profile-pic {
+        height: 4rem;
+        width: 4rem;
+        border-radius: 2.5rem;
+        box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+      }
+
+      input {
+        margin: 0;
+        margin-left: 1rem;
+      }
+    }
+    
+
+    input {
+      box-sizing: border-box;
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+    }
+
+    button {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      align-self: flex-end;
+    }
+  }
+}

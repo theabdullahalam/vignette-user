@@ -8,7 +8,7 @@
   padding-bottom: 2rem;
   // margin-bottom: 2rem;
   padding: 2rem;
-  background: rgb(31, 31, 31);
+  background: rgb(22, 27, 32);
 
   .profile-pic {
     height: 5rem;
@@ -48,8 +48,16 @@
     padding-bottom: 1rem;
   }
 
-  .metamask-button {
+  .info-icon {
+    color: white;
+    font-size: 1.2rem;
+    margin-right: 1rem;
     margin-left: auto;
+    cursor: pointer;
+  }
+
+  .metamask-button {
+    // margin-left: auto;
     background: rgba(255, 255, 255, 0);
     border: 1px solid rgb(255, 255, 255);
     color: white;

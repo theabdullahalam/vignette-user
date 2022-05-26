@@ -96,7 +96,6 @@ export default function HomePage({ ethprovider, current_account }: HomePageProps
   }
 
   const getIsSubscribed = (account: string) => {
-    console.log(getSubscriptions());    
     return getSubscriptions().includes(account);
   }
 

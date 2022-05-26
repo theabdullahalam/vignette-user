@@ -15,6 +15,7 @@ function App() {
   const [ethprovider, setEthProvider] = useState<Web3Provider | undefined>(undefined);
   const [ethSigner, setEthSigner] = useState<JsonRpcSigner | undefined>(undefined);
   const [currentAccount, setCurrentAccount] = useState('');
+  const [profileModalVisible, setProfileModalVisible] = useState<boolean>(false)
 
   useEffect(() => {
     window.ethereum.on('accountsChanged', (accounts: string[]) => {
@@ -44,6 +45,7 @@ function App() {
         connectToMetaMask={connectToMetaMask}
         currentAccount={currentAccount}
         ethprovider={ethprovider}
+        setProfileModalVisible={setProfileModalVisible}
       ></Header>
 
       <Routes>
@@ -54,6 +56,8 @@ function App() {
               currentAccount={currentAccount}
               ethSigner={ethSigner}
               ethprovider={ethprovider}
+              profileModalVisible={profileModalVisible}
+              setProfileModalVisible={setProfileModalVisible}
             />
           }
         />
