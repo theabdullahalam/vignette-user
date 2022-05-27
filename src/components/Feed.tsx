@@ -8,9 +8,11 @@ interface PhotographProps {
 }
 
 export default function Feed({ photographs }: PhotographProps){
+
   return (
     <MasonryContainer className='Feed' columnCounts={{800: 1, 1000: 2, default: 3}} columnGap="1rem">
-      {photographs.map((p: any, i: number) => <img src={getIpfsURL(p.image_cid)} key={i} />)}
+      {/* {photographs.map((p: any, i: number) => <img src={getIpfsURL(p.image_cid)} key={i} />)} */}
+      {photographs.map((p: any, i: number) => <Photograph photograph={p} key={i} mKey={i} />)}
     </MasonryContainer>
   )
 }

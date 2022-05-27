@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
 import { getIpfsURL } from '../helpers';
 import '../styles/Photograph.scss';
+import lozad from 'lozad'
 
 interface PhotographProps {
   photograph: any;
   mKey: any;
-  className: string;
+  masonry_item_style?: any;
+
 }
 
-export default function ({ photograph, mKey, className }: PhotographProps) {
+export default function ({ photograph, mKey, masonry_item_style }: PhotographProps) {
   const [metadata, setMetadata] = useState<any>({});
+
+  const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+  observer.observe();
 
   useEffect(() => {
     fetch(getIpfsURL(photograph.photograph_metadata_cid))
@@ -31,29 +36,6 @@ export default function ({ photograph, mKey, className }: PhotographProps) {
   }
 
   return (
-    //  <div className="Photograph">
-      <img src={getIpfsURL(photograph.image_cid)} className={className + " " + mKey.toString()}></img>
-      // <div className="info-section">
-        // <h3>Info:</h3>
-
-        // {Object.keys(metadata)
-          // .filter((key: string) => metadata[key] !== '')
-          // .map((key: string) => {
-            // return (
-              // <p>
-                // <b>{getKeyTitle(key)}:</b> {metadata[key]}
-              // </p>
-            // );
-          // })}
-        // <div className="buttons">
-          // <a className="link-button" href={getIpfsURL(photograph.image_cid)}>
-            // Image File
-          // </a>
-          // <a className="link-button" href={getIpfsURL(photograph.photograph_metadata_cid)}>
-            // Metadata
-          // </a>
-        // </div>
-      // </div>
-    // </div>
+    <img src={getIpfsURL(photograph.image_cid)} style={{...masonry_item_style}} className='lozad'></img>
   );
 }

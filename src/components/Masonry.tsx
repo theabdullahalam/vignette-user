@@ -60,7 +60,7 @@ export default function MasonryContainer({
       React.Children.map(re_arranged_elements, (child: any) => {
         return React.cloneElement(child, {
           style: child_style,
-          masonrystyle: child_style
+          masonry_item_style: child_style
         });
       })
     );
