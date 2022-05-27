@@ -1,5 +1,7 @@
 import Photograph from "./Photograph";
 import "../styles/Feed.scss"
+import MasonryContainer from "./Masonry";
+import { getIpfsURL } from "../helpers";
 
 interface PhotographProps {
   photographs: any;
@@ -7,8 +9,8 @@ interface PhotographProps {
 
 export default function Feed({ photographs }: PhotographProps){
   return (
-    <div className="Feed">
-      {photographs.map((p: any, i: number) => <Photograph photograph={p} key={i} mKey={i} />)}
-    </div>
+    <MasonryContainer className='Feed' columnCount={3} columnGap="1rem">
+      {photographs.map((p: any, i: number) => <img src={getIpfsURL(p.image_cid)} key={i} />)}
+    </MasonryContainer>
   )
 }

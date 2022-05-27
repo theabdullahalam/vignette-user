@@ -5,9 +5,10 @@ import '../styles/Photograph.scss';
 interface PhotographProps {
   photograph: any;
   mKey: any;
+  className: string;
 }
 
-export default function ({ photograph, mKey }: PhotographProps) {
+export default function ({ photograph, mKey, className }: PhotographProps) {
   const [metadata, setMetadata] = useState<any>({});
 
   useEffect(() => {
@@ -30,29 +31,29 @@ export default function ({ photograph, mKey }: PhotographProps) {
   }
 
   return (
-    <div className="Photograph">
-      <img src={getIpfsURL(photograph.image_cid)}></img>
-      <div className="info-section">
-        <h3>Info:</h3>
+    //  <div className="Photograph">
+      <img src={getIpfsURL(photograph.image_cid)} className={className + " " + mKey.toString()}></img>
+      // <div className="info-section">
+        // <h3>Info:</h3>
 
-        {Object.keys(metadata)
-          .filter((key: string) => metadata[key] !== '')
-          .map((key: string) => {
-            return (
-              <p>
-                <b>{getKeyTitle(key)}:</b> {metadata[key]}
-              </p>
-            );
-          })}
-        <div className="buttons">
-          <a className="link-button" href={getIpfsURL(photograph.image_cid)}>
-            Image File
-          </a>
-          <a className="link-button" href={getIpfsURL(photograph.photograph_metadata_cid)}>
-            Metadata
-          </a>
-        </div>
-      </div>
-    </div>
+        // {Object.keys(metadata)
+          // .filter((key: string) => metadata[key] !== '')
+          // .map((key: string) => {
+            // return (
+              // <p>
+                // <b>{getKeyTitle(key)}:</b> {metadata[key]}
+              // </p>
+            // );
+          // })}
+        // <div className="buttons">
+          // <a className="link-button" href={getIpfsURL(photograph.image_cid)}>
+            // Image File
+          // </a>
+          // <a className="link-button" href={getIpfsURL(photograph.photograph_metadata_cid)}>
+            // Metadata
+          // </a>
+        // </div>
+      // </div>
+    // </div>
   );
 }
