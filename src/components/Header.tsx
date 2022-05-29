@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import '../styles/Header.scss';
-import { EMPTY_PROFILE_PICTURE, getIpfsURL, vignette_abi, vignette_address } from '../helpers';
+import { EMPTY_PROFILE_PICTURE, getIpfsURL, getVignetteAddress, vignette_abi } from '../helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { ethers } from 'ethers';
@@ -39,17 +39,20 @@ export default function Header({
 
   const fetchProfilePicture = async () => {
     if (ethprovider !== undefined) {
-      const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-
-      if (currentAccount !== undefined) {
-        const _account_obj: any = await vignetteContract.getAccount(currentAccount);
-        const _metadata_cid = _account_obj.account_metadata_cid;
-
-        fetch(getIpfsURL(_metadata_cid))
-          .then((data: any) => data.json())
-          .then((metadata: any) => {
-            setMetadata(metadata);
-          });
+      const vignette_address = await getVignetteAddress();
+      if (vignette_address !== undefined){
+        const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
+  
+        if (currentAccount !== undefined) {
+          const _account_obj: any = await vignetteContract.getAccount(currentAccount);
+          const _metadata_cid = _account_obj.account_metadata_cid;
+  
+          fetch(getIpfsURL(_metadata_cid))
+            .then((data: any) => data.json())
+            .then((metadata: any) => {
+              setMetadata(metadata);
+            });
+        }
       }
     }
   }

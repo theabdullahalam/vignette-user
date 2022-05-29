@@ -6,7 +6,7 @@ import {
   getIpfsURL,
   uploadFile,
   vignette_abi,
-  vignette_address
+  getVignetteAddress
 } from '../helpers';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
@@ -67,16 +67,19 @@ export default function ({
 
   const getMetadata = async () => {
     if (ethprovider !== undefined) {
-      const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-
-      if (currentAccount !== undefined) {
-        const _account_obj: any = await vignetteContract.getAccount(currentAccount);
-        const _metadata_cid = _account_obj.account_metadata_cid;
-        fetch(getIpfsURL(_metadata_cid))
-          .then((data: any) => data.json())
-          .then((metadata: any) => {
-            setMetadata(metadata);
-          });
+      const vignette_address = await getVignetteAddress();
+      if (vignette_address !== undefined){
+        const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
+  
+        if (currentAccount !== undefined) {
+          const _account_obj: any = await vignetteContract.getAccount(currentAccount);
+          const _metadata_cid = _account_obj.account_metadata_cid;
+          fetch(getIpfsURL(_metadata_cid))
+            .then((data: any) => data.json())
+            .then((metadata: any) => {
+              setMetadata(metadata);
+            });
+        }
       }
     }
   };
@@ -120,12 +123,15 @@ export default function ({
     const metadata_url = await uploadMetadata(metadata);
 
     if (ethSigner !== undefined) {
-      const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethSigner);
-      vignetteContract.updateAccount(metadata_url).then((e: any) => {
-        setTxnHash(e.hash);
-        setHasUpdated(true);
-        setIsUploading(false);
-      });
+      const vignette_address = await getVignetteAddress();
+      if (vignette_address !== undefined){
+        const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethSigner);
+        vignetteContract.updateAccount(metadata_url).then((e: any) => {
+          setTxnHash(e.hash);
+          setHasUpdated(true);
+          setIsUploading(false);
+        });
+      }
     }
   };
 

@@ -7,6 +7,7 @@ import Header from './components/Header';
 import ProfilePage from './pages/ProfilePage';
 import HomePage from './pages/HomePage';
 import ShowPhotograph from './components/ShowPhotograph';
+import { getVignetteAddress } from './helpers';
 
 function App() {
   // states
@@ -17,24 +18,37 @@ function App() {
   const [photographToShow, setPhotographToShow] = useState<any|undefined>(undefined)
 
   useEffect(() => {
-    window.ethereum.on('accountsChanged', (accounts: string[]) => {
+    if (ethprovider !== undefined){
+      
+      // listen for account changes
+      window.ethereum.on('accountsChanged', (accounts: string[]) => {
       if (accounts.length > 0) {
         setCurrentAccount(accounts[0]);
-      }
-    });
+        }
+      });
+
+      // listen for network changes
+      window.ethereum.on('chainChanged', (chainId: any) => {
+        window.location.reload(); 
+      })
+    }
   }, [ethprovider]);
 
   // functions
   const connectToMetaMask = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-
-    const accounts = await provider.send('eth_requestAccounts', []);
-
-    setEthProvider(provider);
-    setEthSigner(signer);
-    if (accounts.length > 0) {
-      setCurrentAccount(accounts[0]);
+    if (window.ethereum){
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+  
+      const accounts = await provider.send('eth_requestAccounts', []);
+  
+      setEthProvider(provider);
+      setEthSigner(signer);
+      if (accounts.length > 0) {
+        setCurrentAccount(accounts[0]);
+      }
+    } else {
+      alert("You must install an Ethereum compatible wallet to continue.")
     }
   };
 

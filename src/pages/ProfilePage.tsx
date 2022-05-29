@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getBlockExplorerUrl, uploadFile, vignette_abi, vignette_address } from '../helpers';
+import { getBlockExplorerUrl, getVignetteAddress, uploadFile, vignette_abi } from '../helpers';
 import { ethers } from 'ethers';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import Feed from '../components/Feed';
@@ -68,21 +68,24 @@ export default function ProfilePage({
 
   const uploadPhotographToChain = async (photograph: any) => {
     if (ethSigner !== undefined) {
-      const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethSigner);
-      vignetteContract.publishPhotograph(photograph).then((e: any) => {
-        setIsUploading(false);
-        setIsWaitingForBlockConfirmation(true);
-        setUploadTxn(e.hash);
-        let my_interval = setInterval(() => {
-          ethprovider?.getTransaction(e.hash).then((t: any) => {
-            if (t.blockNumber !== null) {
-              fetchPhotographsFromChain(currentAccount);
-              clearInterval(my_interval);
-              setIsWaitingForBlockConfirmation(false);
-            }
-          });
-        }, 1000);
-      });
+      const vignette_address = await getVignetteAddress();
+      if (vignette_address !== undefined) {
+        const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethSigner);
+        vignetteContract.publishPhotograph(photograph).then((e: any) => {
+          setIsUploading(false);
+          setIsWaitingForBlockConfirmation(true);
+          setUploadTxn(e.hash);
+          let my_interval = setInterval(() => {
+            ethprovider?.getTransaction(e.hash).then((t: any) => {
+              if (t.blockNumber !== null) {
+                fetchPhotographsFromChain(currentAccount);
+                clearInterval(my_interval);
+                setIsWaitingForBlockConfirmation(false);
+              }
+            });
+          }, 1000);
+        });
+      }
     }
   };
 
@@ -117,9 +120,12 @@ export default function ProfilePage({
 
   const fetchPhotographsFromChain = async (account: string) => {
     if (ethprovider !== undefined) {
-      const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-      let _photographs: any = await vignetteContract.getPhotographs(account);
-      setPhotographs([..._photographs].reverse());
+      const vignette_address = await getVignetteAddress();
+      if (vignette_address !== undefined) {
+        const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
+        let _photographs: any = await vignetteContract.getPhotographs(account);
+        setPhotographs([..._photographs].reverse());
+      }
     }
   };
 

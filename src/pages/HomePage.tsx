@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import '../styles/HomePage.scss';
 import { Web3Provider } from '@ethersproject/providers';
-import { vignette_abi, vignette_address } from '../helpers';
+import { vignette_abi, getVignetteAddress } from '../helpers';
 import Feed from '../components/Feed';
 
 interface HomePageProps {
@@ -57,15 +57,18 @@ export default function HomePage({ ethprovider, current_account, setPhotographTo
 
   const fetchPhotographsFromChain = async (account: string | undefined = undefined) => {
     if (ethprovider !== undefined) {
-      const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-
-      if (account !== undefined) {
-        let _photographs: any = await vignetteContract.getPhotographs(account);
-        setPhotographs([..._photographs].reverse());
-      } else {
-        vignetteContract.getAllPhotographs().then((_photographs: any) => {
+      const vignette_address = await getVignetteAddress();
+      if (vignette_address !== undefined){
+        const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
+  
+        if (account !== undefined) {
+          let _photographs: any = await vignetteContract.getPhotographs(account);
           setPhotographs([..._photographs].reverse());
-        });
+        } else {
+          vignetteContract.getAllPhotographs().then((_photographs: any) => {
+            setPhotographs([..._photographs].reverse());
+          });
+        }
       }
     }
   };
@@ -104,25 +107,28 @@ export default function HomePage({ ethprovider, current_account, setPhotographTo
   const fetchSubscriptionPhotographs = async () => {
     if (ethprovider !== undefined) {
 
-      const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-      const _subs = getSubscriptions();
-
-      let new_photographs: any = []
-
-      _subs.forEach(async (acc: string) => {
-        vignetteContract.getPhotographs(acc).then(
-          (res: any) => {
-            res.forEach((_pic: any ) => {
-              new_photographs = [...new_photographs, _pic]
-            })
-          }
-        )
-        .finally(
-          (s: any) => {
-            setPhotographs(new_photographs);
-          }
-        )
-      });
+      const vignette_address = await getVignetteAddress();
+      if (vignette_address !== undefined){
+        const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
+        const _subs = getSubscriptions();
+  
+        let new_photographs: any = []
+  
+        _subs.forEach(async (acc: string) => {
+          vignetteContract.getPhotographs(acc).then(
+            (res: any) => {
+              res.forEach((_pic: any ) => {
+                new_photographs = [...new_photographs, _pic]
+              })
+            }
+          )
+          .finally(
+            (s: any) => {
+              setPhotographs(new_photographs);
+            }
+          )
+        });
+      }
 
       
     }
