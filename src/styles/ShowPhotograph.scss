@@ -1,0 +1,72 @@
+.ShowPhotograph{
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  background: rgba(0, 0, 0, 0.769);
+
+  display: grid;
+
+  .photo-card {
+    background: rgb(243, 243, 243);
+    border-radius: 1rem;
+    padding: 2rem;
+    place-self: center center;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+    "image cross"
+    "image metadata";
+
+    box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+
+    .image {
+      width: auto;
+      height: auto;
+      max-height: 90vh;
+      max-width: 70vw;
+      grid-area: image;
+
+      box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+      -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+      -moz-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+    }
+
+    .cross {
+      grid-area: cross;
+      place-self: start end;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    .metadata {
+
+      grid-area: metadata;
+      place-self: center start;
+      margin-left: 2rem;
+
+      p {
+        margin: 0;
+
+        ul {
+          margin: 0;
+          padding-left: 0;
+          list-style: none;
+
+          li {
+            margin-top: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}

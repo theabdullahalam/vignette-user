@@ -1,17 +1,17 @@
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import '../styles/HomePage.scss';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { Web3Provider } from '@ethersproject/providers';
 import { vignette_abi, vignette_address } from '../helpers';
 import Feed from '../components/Feed';
 
 interface HomePageProps {
-  // ethSigner: JsonRpcSigner | undefined;
   ethprovider: Web3Provider | undefined;
   current_account: string;
+  setPhotographToShow: any;
 }
 
-export default function HomePage({ ethprovider, current_account }: HomePageProps) {
+export default function HomePage({ ethprovider, current_account, setPhotographToShow }: HomePageProps) {
   const [currentSection, setCurrentSection] = useState<string>('latest');
   const [enteredAddress, setEnteredAddress] = useState<string>('');
   const [photographs, setPhotographs] = useState<any>([]);
@@ -23,10 +23,12 @@ export default function HomePage({ ethprovider, current_account }: HomePageProps
 
   useEffect(() => {
     loadSectionPhotos()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     fetchAllPhotographs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ethprovider]);
 
   useEffect(() => {
@@ -198,7 +200,7 @@ export default function HomePage({ ethprovider, current_account }: HomePageProps
         <></>
       )}
 
-      <Feed photographs={photographs} />
+      <Feed photographs={photographs} setPhotographToShow={setPhotographToShow} />
     </div>
   );
 }

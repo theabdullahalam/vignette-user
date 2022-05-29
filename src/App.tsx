@@ -2,13 +2,11 @@ import './App.scss';
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
-import { BrowserRouter, Link, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import { getIpfsURL, uploadFile, vignette_abi, vignette_address } from './helpers';
-import Photograph from './components/Photograph';
-import Feed from './components/Feed';
 import ProfilePage from './pages/ProfilePage';
 import HomePage from './pages/HomePage';
+import ShowPhotograph from './components/ShowPhotograph';
 
 function App() {
   // states
@@ -16,6 +14,7 @@ function App() {
   const [ethSigner, setEthSigner] = useState<JsonRpcSigner | undefined>(undefined);
   const [currentAccount, setCurrentAccount] = useState('');
   const [profileModalVisible, setProfileModalVisible] = useState<boolean>(false)
+  const [photographToShow, setPhotographToShow] = useState<any|undefined>(undefined)
 
   useEffect(() => {
     window.ethereum.on('accountsChanged', (accounts: string[]) => {
@@ -48,6 +47,8 @@ function App() {
         setProfileModalVisible={setProfileModalVisible}
       ></Header>
 
+      <ShowPhotograph photograph={photographToShow} setPhotographToShow={setPhotographToShow} />
+
       <Routes>
         <Route
           path="/profile"
@@ -58,12 +59,13 @@ function App() {
               ethprovider={ethprovider}
               profileModalVisible={profileModalVisible}
               setProfileModalVisible={setProfileModalVisible}
+              setPhotographToShow={setPhotographToShow}
             />
           }
         />
         <Route
           path="/"
-          element={<HomePage ethprovider={ethprovider} current_account={currentAccount} />}
+          element={<HomePage ethprovider={ethprovider} current_account={currentAccount} setPhotographToShow={setPhotographToShow} />}
         />
       </Routes>
     </div>

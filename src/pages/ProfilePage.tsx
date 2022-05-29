@@ -14,6 +14,7 @@ interface ProfilePageProps {
   ethprovider: Web3Provider | undefined;
   profileModalVisible: any;
   setProfileModalVisible: any;
+  setPhotographToShow: any;
 }
 
 export default function ProfilePage({
@@ -21,7 +22,8 @@ export default function ProfilePage({
   ethSigner,
   ethprovider,
   profileModalVisible,
-  setProfileModalVisible
+  setProfileModalVisible,
+  setPhotographToShow
 }: ProfilePageProps) {
   // state vars
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
@@ -226,7 +228,7 @@ export default function ProfilePage({
       ) : (
         <></>
       )}
-      <Feed photographs={photographs} />
+      <Feed photographs={photographs} setPhotographToShow={setPhotographToShow} />
     </div>
   );
 }
