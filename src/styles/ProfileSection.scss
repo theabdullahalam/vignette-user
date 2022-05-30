@@ -1,0 +1,24 @@
+.ProfileSection {
+
+  display: flex;
+  align-items: center;
+
+  .profile-pic {
+    height: 10rem;
+    width: 10rem;
+    border-radius: 5rem;
+    box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.19);
+  }
+
+  .metadata {
+    ul {
+      list-style: none;
+
+      li {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}

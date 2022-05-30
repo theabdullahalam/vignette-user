@@ -4,6 +4,7 @@ import '../styles/HomePage.scss';
 import { Web3Provider } from '@ethersproject/providers';
 import { vignette_abi, getVignetteAddress } from '../helpers';
 import Feed from '../components/Feed';
+import ProfileSection from '../components/ProfileSection';
 
 interface HomePageProps {
   ethprovider: Web3Provider | undefined;
@@ -11,7 +12,11 @@ interface HomePageProps {
   setPhotographToShow: any;
 }
 
-export default function HomePage({ ethprovider, current_account, setPhotographToShow }: HomePageProps) {
+export default function HomePage({
+  ethprovider,
+  current_account,
+  setPhotographToShow
+}: HomePageProps) {
   const [currentSection, setCurrentSection] = useState<string>('latest');
   const [enteredAddress, setEnteredAddress] = useState<string>('');
   const [photographs, setPhotographs] = useState<any>([]);
@@ -22,9 +27,9 @@ export default function HomePage({ ethprovider, current_account, setPhotographTo
   };
 
   useEffect(() => {
-    loadSectionPhotos()
+    loadSectionPhotos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   useEffect(() => {
     fetchAllPhotographs();
@@ -32,20 +37,20 @@ export default function HomePage({ ethprovider, current_account, setPhotographTo
   }, [ethprovider]);
 
   useEffect(() => {
-    loadSectionPhotos()
+    loadSectionPhotos();
   }, [currentSection]);
 
   useEffect(() => {
-    setIsSubscribed(getIsSubscribed(enteredAddress))
-  }, [enteredAddress])
+    setIsSubscribed(getIsSubscribed(enteredAddress));
+  }, [enteredAddress]);
 
   const loadSectionPhotos = () => {
-    setPhotographs([])
+    setPhotographs([]);
     if (currentSection === 'latest') {
       fetchAllPhotographs();
     } else if (currentSection === 'subscriptions') {
-      setPhotographs([])
-      fetchSubscriptionPhotographs()
+      setPhotographs([]);
+      fetchSubscriptionPhotographs();
     } else if (currentSection === 'view-account') {
       if (ethers.utils.isAddress(enteredAddress)) {
         fetchPhotographsFromChain(enteredAddress);
@@ -53,14 +58,14 @@ export default function HomePage({ ethprovider, current_account, setPhotographTo
         setPhotographs([]);
       }
     }
-  }
+  };
 
   const fetchPhotographsFromChain = async (account: string | undefined = undefined) => {
     if (ethprovider !== undefined) {
       const vignette_address = await getVignetteAddress();
-      if (vignette_address !== undefined){
+      if (vignette_address !== undefined) {
         const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-  
+
         if (account !== undefined) {
           let _photographs: any = await vignetteContract.getPhotographs(account);
           setPhotographs([..._photographs].reverse());
@@ -75,18 +80,18 @@ export default function HomePage({ ethprovider, current_account, setPhotographTo
 
   const subscribeToAccount = (account: string) => {
     let subscriptions: any = getSubscriptions();
-    if (!getIsSubscribed(account)){
-      setSubscriptions([...subscriptions, account])
-      setIsSubscribed(true)
+    if (!getIsSubscribed(account)) {
+      setSubscriptions([...subscriptions, account]);
+      setIsSubscribed(true);
     }
   };
 
   const unsubscribeFromAccount = (account: string) => {
     let subscriptions: any = getSubscriptions();
-    let new_subscriptions = subscriptions.filter((s: string) => s!==account);
+    let new_subscriptions = subscriptions.filter((s: string) => s !== account);
     setSubscriptions(new_subscriptions);
     setIsSubscribed(false);
-  }
+  };
 
   const getSubscriptions = () => {
     const _subscriptions: any = JSON.parse(localStorage!.getItem('subscriptions') || '{}');
@@ -98,41 +103,36 @@ export default function HomePage({ ethprovider, current_account, setPhotographTo
     const _subscriptions: any = JSON.parse(localStorage!.getItem('subscriptions') || '{}');
     _subscriptions[current_account] = subs;
     localStorage.setItem('subscriptions', JSON.stringify(_subscriptions));
-  }
+  };
 
   const getIsSubscribed = (account: string) => {
     return getSubscriptions().includes(account);
-  }
+  };
 
   const fetchSubscriptionPhotographs = async () => {
     if (ethprovider !== undefined) {
-
       const vignette_address = await getVignetteAddress();
-      if (vignette_address !== undefined){
+      if (vignette_address !== undefined) {
         const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
         const _subs = getSubscriptions();
-  
-        let new_photographs: any = []
-  
+
+        let new_photographs: any = [];
+
         _subs.forEach(async (acc: string) => {
-          vignetteContract.getPhotographs(acc).then(
-            (res: any) => {
-              res.forEach((_pic: any ) => {
-                new_photographs = [...new_photographs, _pic]
-              })
-            }
-          )
-          .finally(
-            (s: any) => {
+          vignetteContract
+            .getPhotographs(acc)
+            .then((res: any) => {
+              res.forEach((_pic: any) => {
+                new_photographs = [...new_photographs, _pic];
+              });
+            })
+            .finally((s: any) => {
               setPhotographs(new_photographs);
-            }
-          )
+            });
         });
       }
-
-      
     }
-  }
+  };
 
   return (
     <div className="HomePage">
@@ -191,16 +191,18 @@ export default function HomePage({ ethprovider, current_account, setPhotographTo
               className={ethers.utils.isAddress(enteredAddress) ? '' : 'invalid'}
               disabled={!ethers.utils.isAddress(enteredAddress)}
               onClick={(e: any) => {
-                if (isSubscribed){
+                if (isSubscribed) {
                   unsubscribeFromAccount(enteredAddress);
-                }else{
+                } else {
                   subscribeToAccount(enteredAddress);
                 }
               }}
             >
-              { isSubscribed ? 'Unsubscribe' : 'Subscribe' }
+              {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
             </button>
           </div>
+
+          {photographs.length > 0 ? <ProfileSection /> : <></>}
         </div>
       ) : (
         <></>
