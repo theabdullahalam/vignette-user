@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { EMPTY_PROFILE_PICTURE, getIpfsURL, getVignetteAddress, vignette_abi } from '../helpers';
-import { MetadataInterface } from '../interfaces';
 import '../styles/ProfileSection.scss';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 
 interface ProfileSectionProps {
