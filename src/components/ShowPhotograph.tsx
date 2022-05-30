@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getIpfsURL } from '../helpers';
-import '../styles/ShowPhotograph.scss'
+import '../styles/ShowPhotograph.scss';
 
 interface ShowPhotographProps {
   photograph: any;
@@ -8,11 +8,16 @@ interface ShowPhotographProps {
 }
 
 export default function ShowPhotograph({ photograph, setPhotographToShow }: ShowPhotographProps) {
-
   const [metadata, setMetadata] = useState<any>({});
 
+  const handleKeyPress = (event: any) => {
+    if(event.key === 'Escape'){
+      hidePhotograph()
+    }
+  }
+
   useEffect(() => {
-    if (photograph !== undefined){
+    if (photograph !== undefined) {
       fetch(getIpfsURL(photograph.photograph_metadata_cid))
         .then((data: any) => data.json())
         .then((metadata: any) => {
@@ -21,9 +26,14 @@ export default function ShowPhotograph({ photograph, setPhotographToShow }: Show
     }
   }, [photograph]);
 
-  const hidePhotograph = (e: any) => {
-    if (e.target.classList.contains('is-closer')) {
+  const hidePhotograph = () => {    
+      setMetadata({});
       setPhotographToShow(undefined);
+  };
+
+  const hidePhotoGraphClicked = (e: any) => {
+    if (e.target.classList.contains('is-closer')) {
+      hidePhotograph()
     }
   }
 
@@ -39,20 +49,32 @@ export default function ShowPhotograph({ photograph, setPhotographToShow }: Show
   };
 
   return (
-    <div className="ShowPhotograph" style={{
-      display: photograph === undefined ? "none" : "grid"
-    }}>
-      <div className="photo-card is-closer" onClick={hidePhotograph}>
-        <img src={photograph !== undefined ? getIpfsURL(photograph.image_cid) : ""} className='image'/>
-        <span className='cross is-closer' onClick={hidePhotograph}>x</span>
-        <div className='metadata'>
+    <div
+      className="ShowPhotograph is-closer"
+      style={{
+        display: photograph === undefined ? 'none' : 'grid'
+      }}
+      onClick={hidePhotoGraphClicked}
+      onKeyDown={handleKeyPress}
+    >
+      <div className="photo-card">
+        <img
+          src={photograph !== undefined ? getIpfsURL(photograph.image_cid) : ''}
+          className="image"
+        />
+        <span className="cross is-closer" onClick={hidePhotoGraphClicked}>
+          x
+        </span>
+        <div className="metadata">
           <p>
             <ul>
-              {
-                Object.keys(metadata).map((key: any) => <li>
-                  <b>{getKeyTitle(key)}: </b>: {metadata[key]}
-                </li>)
-              }
+              {Object.keys(metadata)
+                .filter((key: any) => metadata[key] !== '')
+                .map((key: any) => (
+                  <li>
+                    <b>{getKeyTitle(key)}: </b>{metadata[key]}
+                  </li>
+                ))}
             </ul>
           </p>
         </div>
