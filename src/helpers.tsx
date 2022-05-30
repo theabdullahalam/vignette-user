@@ -2,7 +2,6 @@ import vignette_contract from './abis/Vignette.json';
 import { create } from 'ipfs-http-client';
 
 const {
-  REACT_APP_VIGNETTE_ADDRESS,
   REACT_APP_GANACHE_CONTRACT,
   REACT_APP_RINKEBY_CONTRACT,
   REACT_APP_ROPSTEN_CONTRACT
@@ -10,7 +9,6 @@ const {
 
 // contract details
 export const vignette_abi = vignette_contract.abi;
-// export const vignette_address = REACT_APP_VIGNETTE_ADDRESS ?? '';
 
 // infura
 const ipfsclient = create({host: 'ipfs.infura.io', port: 5001, protocol: 'https', apiPath: '/api/v0'})
