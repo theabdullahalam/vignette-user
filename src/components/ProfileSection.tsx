@@ -24,7 +24,7 @@ export default function ProfileSection({ account, ethprovider }: ProfileSectionP
       name: 'Name',
       website: 'Website',
       contact: 'Contact',
-      location: 'Location',
+      location: 'Location'
     }[key];
   };
 
@@ -34,7 +34,7 @@ export default function ProfileSection({ account, ethprovider }: ProfileSectionP
         const vignette_address = await getVignetteAddress();
         if (vignette_address !== undefined) {
           const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-  
+
           if (account !== undefined) {
             const _account_obj: any = await vignetteContract.getAccount(account);
             const _metadata_cid = _account_obj.account_metadata_cid;
@@ -46,22 +46,30 @@ export default function ProfileSection({ account, ethprovider }: ProfileSectionP
           }
         }
       }
-    }
-    _init_()
-  }, [])
+    };
+    _init_();
+  }, []);
 
   return (
     <div className="ProfileSection">
-      <img src={ metadata.profilepic !== '' || metadata.profilepic !== undefined ? getIpfsURL(metadata.profilepic) : EMPTY_PROFILE_PICTURE} className="profile-pic" />
+      <img
+        src={
+          metadata.profilepic !== '' || metadata.profilepic !== undefined
+            ? getIpfsURL(metadata.profilepic)
+            : EMPTY_PROFILE_PICTURE
+        }
+        className="profile-pic"
+      />
       <div className="metadata">
         <ul>
-        {Object.keys(metadata)
-          .filter((key: any) => metadata[key] !== '' && key !== 'profilepic')
-          .map((key: any) => (
-            <li>
-              <b>{getKeyTitle(key)}: </b>{metadata[key]}
-            </li>
-          ))}
+          {Object.keys(metadata)
+            .filter((key: any) => metadata[key] !== '' && key !== 'profilepic')
+            .map((key: any) => (
+              <li>
+                <b>{getKeyTitle(key)}: </b>
+                {metadata[key]}
+              </li>
+            ))}
         </ul>
       </div>
     </div>
