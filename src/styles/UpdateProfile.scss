@@ -76,10 +76,23 @@
       padding: 0.5rem;
     }
 
-    button {
+    .submit-row{
       margin-top: 2rem;
       margin-bottom: 1rem;
       align-self: flex-end;
+      display: flex;
+      align-items: center;
+
+      .loading-gif{
+        width: 3rem;
+        margin-right: 1rem;
+      }
+
+      button[disabled]{
+        color: rgba(0, 0, 0, 0.187);
+      }
+    
     }
+
   }
 }

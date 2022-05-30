@@ -53,7 +53,6 @@ export default function ({
     setAccountLocation(metadata.location === undefined ? '' : metadata.location);
     setAccountPicCid(metadata.profilepic === undefined ? '' : metadata.profilepic);
     console.log(metadata);
-    
   }, [metadata]);
 
   useEffect(() => {
@@ -69,9 +68,9 @@ export default function ({
   const getMetadata = async () => {
     if (ethprovider !== undefined) {
       const vignette_address = await getVignetteAddress();
-      if (vignette_address !== undefined){
+      if (vignette_address !== undefined) {
         const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-  
+
         if (currentAccount !== undefined) {
           const _account_obj: any = await vignetteContract.getAccount(currentAccount);
           const _metadata_cid = _account_obj.account_metadata_cid;
@@ -102,15 +101,14 @@ export default function ({
   };
 
   const updateAccount = async (e: any) => {
-    
     e.preventDefault();
     setIsUploading(true);
     let profile_pic_cid;
 
     // upload profile pic
-    if (uploadedFile !== undefined){
+    if (uploadedFile !== undefined) {
       profile_pic_cid = await uploadFile(uploadedFile);
-      setAccountPicCid(profile_pic_cid === undefined ? '' : profile_pic_cid)
+      setAccountPicCid(profile_pic_cid === undefined ? '' : profile_pic_cid);
     }
 
     const metadata = {
@@ -125,7 +123,7 @@ export default function ({
 
     if (ethSigner !== undefined) {
       const vignette_address = await getVignetteAddress();
-      if (vignette_address !== undefined){
+      if (vignette_address !== undefined) {
         const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethSigner);
         vignetteContract.updateAccount(metadata_url).then((e: any) => {
           setTxnHash(e.hash);
@@ -149,13 +147,7 @@ export default function ({
         </span>
         <div className="note">
           <p>
-            <b>Note:</b> The data you enter here will go on-chain, forever. That would mean that the
-            account {currentAccount} will get linked to the name and identity you enter below,
-            on-chain, forever. This may compromise pseudonymity, which is one of main appeals of a
-            blockchain based stack.
-          </p>
-          <p>
-            <b>You might want to use a new account just for this dApp.</b>
+            <b>Note:</b> The data you enter here will go on-chain, forever. To maintain pseuodonymity, <b>you might want to use a new account just for this dApp.</b>
           </p>
         </div>
         {hasUpdated ? (
@@ -167,10 +159,18 @@ export default function ({
         )}
 
         <form className="profile-form">
-          <label className='profile-pic-label'>Update Profile Picture</label>
+          <label className="profile-pic-label">Update Profile Picture</label>
           <div className="profile-pic-div">
-            <img className="profile-pic" src={ accountPicCid === '' ? EMPTY_PROFILE_PICTURE : getIpfsURL(accountPicCid) }></img>
-            <input type="file" name='profile-pic-file-input' onChange={handleFileInputChange} disabled={isUploading} />
+            <img
+              className="profile-pic"
+              src={accountPicCid === '' ? EMPTY_PROFILE_PICTURE : getIpfsURL(accountPicCid)}
+            ></img>
+            <input
+              type="file"
+              name="profile-pic-file-input"
+              onChange={handleFileInputChange}
+              disabled={isUploading}
+            />
           </div>
 
           <label htmlFor="name-input">Photographer Name</label>
@@ -220,8 +220,12 @@ export default function ({
             }}
             disabled={isUploading}
           />
-
-          <button onClick={updateAccount} disabled={isUploading}>Update On-Chain</button>
+          <div className="submit-row">
+            {isUploading ? <img src={loadergif} className="loading-gif" /> : <></>}
+            <button onClick={updateAccount} disabled={isUploading}>
+              Update On-Chain
+            </button>
+          </div>
         </form>
       </div>
     </div>
