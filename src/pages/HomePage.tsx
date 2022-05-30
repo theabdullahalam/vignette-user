@@ -202,7 +202,7 @@ export default function HomePage({
             </button>
           </div>
 
-          {photographs.length > 0 ? <ProfileSection /> : <></>}
+          {photographs.length > 0 && enteredAddress != '' ? <ProfileSection account={enteredAddress} ethprovider={ethprovider} /> : <></>}
         </div>
       ) : (
         <></>
