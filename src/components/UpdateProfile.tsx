@@ -11,6 +11,7 @@ import {
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { MetadataInterface } from '../interfaces';
+import loadergif from '../img/loader.gif';
 
 interface UpdateProfileProps {
   profileModalVisible: any;
@@ -169,7 +170,7 @@ export default function ({
           <label className='profile-pic-label'>Update Profile Picture</label>
           <div className="profile-pic-div">
             <img className="profile-pic" src={ accountPicCid === '' ? EMPTY_PROFILE_PICTURE : getIpfsURL(accountPicCid) }></img>
-            <input type="file" name='profile-pic-file-input' onChange={handleFileInputChange} />
+            <input type="file" name='profile-pic-file-input' onChange={handleFileInputChange} disabled={isUploading} />
           </div>
 
           <label htmlFor="name-input">Photographer Name</label>
@@ -181,6 +182,7 @@ export default function ({
             onChange={(e) => {
               setAccountName(e.target.value);
             }}
+            disabled={isUploading}
           />
 
           <label htmlFor="name-input">Website</label>
@@ -192,6 +194,7 @@ export default function ({
             onChange={(e) => {
               setAccountWebsite(e.target.value);
             }}
+            disabled={isUploading}
           />
 
           <label htmlFor="name-input">Contact</label>
@@ -203,6 +206,7 @@ export default function ({
             onChange={(e) => {
               setAccountContact(e.target.value);
             }}
+            disabled={isUploading}
           />
 
           <label htmlFor="name-input">Location</label>
@@ -214,9 +218,10 @@ export default function ({
             onChange={(e) => {
               setAccountLocation(e.target.value);
             }}
+            disabled={isUploading}
           />
 
-          <button onClick={updateAccount}>Update On-Chain</button>
+          <button onClick={updateAccount} disabled={isUploading}>Update On-Chain</button>
         </form>
       </div>
     </div>

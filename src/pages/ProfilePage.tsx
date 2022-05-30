@@ -7,6 +7,7 @@ import '../styles/ProfilePage.scss';
 import { v4 as uuidv4 } from 'uuid';
 import UpdateProfile from '../components/UpdateProfile';
 import '../styles/modal.scss';
+import loadergif from '../img/loader.gif';
 
 interface ProfilePageProps {
   currentAccount: string;
@@ -145,7 +146,14 @@ export default function ProfilePage({
             <></>
           )}
           <div className="photograph-upload">
-            <p className="title">Upload a Photograph</p>
+            <div className="title-div">
+              <p className="title">Upload a Photograph</p>
+              {isUploading || isWaitingForBlockConcfirmation ? (
+                <img src={loadergif} className="loading-gif" />
+              ) : (
+                <></>
+              )}
+            </div>
 
             {isUploading && <p>Uploading File...</p>}
 
