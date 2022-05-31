@@ -21,7 +21,7 @@ const hostUrl = `https://ipfs.infura.io/ipfs/`
 
 export const getVignetteAddress = async () => {
   
-  const chainId: string = await window.ethereum.request({ method: 'eth_chainId' })  
+  const chainId: string = await window.ethereum.request({ method: 'eth_chainId' })
   return {
     '0x3': REACT_APP_ROPSTEN_CONTRACT ?? '',
     '0x4': REACT_APP_RINKEBY_CONTRACT ?? '',

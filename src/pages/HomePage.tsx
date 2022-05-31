@@ -21,6 +21,7 @@ export default function HomePage({
   const [enteredAddress, setEnteredAddress] = useState<string>('');
   const [photographs, setPhotographs] = useState<any>([]);
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [emptyPrompt, setEmptyPrompt] = useState<string>('');
 
   const fetchAllPhotographs = async () => {
     await fetchPhotographsFromChain();
@@ -28,6 +29,7 @@ export default function HomePage({
 
   useEffect(() => {
     loadSectionPhotos();
+    setEmptyPromptState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -43,6 +45,10 @@ export default function HomePage({
   useEffect(() => {
     setIsSubscribed(getIsSubscribed(enteredAddress));
   }, [enteredAddress]);
+
+  useEffect(() => {
+    setEmptyPromptState()    
+  }, [current_account, photographs])
 
   const loadSectionPhotos = () => {
     setPhotographs([]);
@@ -108,6 +114,27 @@ export default function HomePage({
   const getIsSubscribed = (account: string) => {
     return getSubscriptions().includes(account);
   };
+
+  const getEmptyPrompt = async () => {
+    if (!window.ethereum) {
+      return 'You need to install Metamask to continue...';
+    }
+    if (current_account === '') {
+      return 'Connect to Metamask to view photographs...';
+    }
+    const chainId: string = await window.ethereum.request({ method: 'eth_chainId' });
+    if (chainId !== '0x3' && chainId !== '0x4'){
+      return 'Are you sure you are connected to Rinkeby or Ropsten?';
+    }
+    if (photographs.length === 0) {
+      return 'There are no photographs to display. Go to profile to upload one :)';
+    }
+  };
+
+  const setEmptyPromptState = async () => {
+    const prompt = await getEmptyPrompt();
+    setEmptyPrompt(prompt || '');
+  }
 
   const fetchSubscriptionPhotographs = async () => {
     if (ethprovider !== undefined) {
@@ -202,13 +229,18 @@ export default function HomePage({
             </button>
           </div>
 
-          {photographs.length > 0 && enteredAddress != '' ? <ProfileSection account={enteredAddress} ethprovider={ethprovider} /> : <></>}
+          {photographs.length > 0 && enteredAddress != '' ? (
+            <ProfileSection account={enteredAddress} ethprovider={ethprovider} />
+          ) : (
+            <></>
+          )}
         </div>
       ) : (
         <></>
       )}
 
       <Feed photographs={photographs} setPhotographToShow={setPhotographToShow} />
+      {photographs.length === 0 ? <p className="empty-prompt">{emptyPrompt}</p> : <></>}
     </div>
   );
 }
