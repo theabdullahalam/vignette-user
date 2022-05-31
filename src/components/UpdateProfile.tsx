@@ -21,7 +21,7 @@ interface UpdateProfileProps {
   currentAccount: string;
 }
 
-export default function ({
+export default function UpdateProfile({
   profileModalVisible,
   setProfileModalVisible,
   ethSigner,
@@ -29,7 +29,6 @@ export default function ({
   currentAccount
 }: UpdateProfileProps) {
   const [uploadedFile, setUploadedFile] = useState<File | undefined>();
-  const [profilePicture, setProfilePicture] = useState<string>('');
   const [accountName, setAccountName] = useState<string>('');
   const [accountWebsite, setAccountWebsite] = useState<string>('');
   const [accountContact, setAccountContact] = useState<string>('');
@@ -56,6 +55,7 @@ export default function ({
 
   useEffect(() => {
     getMetadata();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const closeModal = (e: any) => {
@@ -160,6 +160,7 @@ export default function ({
         <form className="profile-form">
           <label className="profile-pic-label">Update Profile Picture</label>
           <div className="profile-pic-div">
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
             <img
               className="profile-pic"
               src={accountPicCid === '' ? EMPTY_PROFILE_PICTURE : getIpfsURL(accountPicCid)}
@@ -220,6 +221,7 @@ export default function ({
             disabled={isUploading}
           />
           <div className="submit-row">
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
             {isUploading ? <img src={loadergif} className="loading-gif" /> : <></>}
             <button onClick={updateAccount} disabled={isUploading}>
               Update On-Chain

@@ -47,10 +47,12 @@ export default function ProfileSection({ account, ethprovider }: ProfileSectionP
       }
     };
     _init_();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="ProfileSection">
+      {/* eslint-disable-next-line jsx-a11y/alt-text */}
       <img
         src={
           metadata.profilepic !== '' || metadata.profilepic !== undefined

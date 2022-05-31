@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { Web3Provider } from '@ethersproject/providers';
 import '../styles/Header.scss';
 import { EMPTY_PROFILE_PICTURE, getIpfsURL, getVignetteAddress, vignette_abi } from '../helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,6 +37,7 @@ export default function Header({
       fetchProfilePicture();
     };
     _fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAccount]);
 
   const fetchProfilePicture = async () => {
@@ -88,6 +89,7 @@ export default function Header({
         </button>
       </div>
       <Link to="/profile">
+        {/* eslint-disable-next-line jsx-a11y/alt-text */}
         <img
           className="profile-pic"
           src={metadata.profilepic === '' ? EMPTY_PROFILE_PICTURE : getIpfsURL(metadata.profilepic)}

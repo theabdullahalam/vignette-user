@@ -23,16 +23,20 @@
     font-style: italic;
     color: rgb(42, 42, 42);
     margin-bottom: 2rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .success-note{
-    border: 2px solid rgba(0, 128, 128, 0.338);
-    border-radius: 2rem;
+    border: 2px solid rgba(0, 128, 128, 0.527);
+    border-radius: 1rem;
     align-self: flex-start;
     padding: 1rem;
-    color: rgba(0, 128, 128, 0.681);
+    color: rgba(0, 103, 103, 0.768);
     font-style: italic;
     margin-bottom: 2rem;
+    width: 100%;
+    box-sizing: border-box;
 
     p {
       margin: 0;
