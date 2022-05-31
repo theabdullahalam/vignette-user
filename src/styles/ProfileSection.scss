@@ -13,8 +13,13 @@
   }
 
   .metadata {
+
     ul {
       list-style: none;
+
+      @media screen and (max-width: 575px) {
+        padding-left: 1rem;
+      }
 
       li {
         margin-top: 0.5rem;

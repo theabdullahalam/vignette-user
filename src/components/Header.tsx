@@ -7,6 +7,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { ethers } from 'ethers';
 import { MetadataInterface } from '../interfaces';
 import { useEffect, useState } from 'react';
+import { useMatch } from 'react-router-dom';
 
 interface HeaderProps {
   connectToMetaMask: any;
@@ -21,7 +22,6 @@ export default function Header({
   ethprovider,
   setProfileModalVisible
 }: HeaderProps) {
-
   const [metadata, setMetadata] = useState<MetadataInterface>({
     name: '',
     website: '',
@@ -30,23 +30,25 @@ export default function Header({
     profilepic: ''
   });
 
+  let match = useMatch('/profile');
+
   useEffect(() => {
     const _fetch = async () => {
       fetchProfilePicture();
-    }
-    _fetch()
-  }, [currentAccount])
+    };
+    _fetch();
+  }, [currentAccount]);
 
   const fetchProfilePicture = async () => {
     if (ethprovider !== undefined) {
       const vignette_address = await getVignetteAddress();
-      if (vignette_address !== undefined){
+      if (vignette_address !== undefined) {
         const vignetteContract = new ethers.Contract(vignette_address, vignette_abi, ethprovider);
-  
+
         if (currentAccount !== undefined) {
           const _account_obj: any = await vignetteContract.getAccount(currentAccount);
           const _metadata_cid = _account_obj.account_metadata_cid;
-  
+
           fetch(getIpfsURL(_metadata_cid))
             .then((data: any) => data.json())
             .then((metadata: any) => {
@@ -55,7 +57,7 @@ export default function Header({
         }
       }
     }
-  }
+  };
 
   return (
     <div className="Header">
@@ -65,22 +67,31 @@ export default function Header({
       </Link>
       {/* <Link to="/account" className='text-link account-button'>ACCOUNT</Link> */}
 
-      <FontAwesomeIcon
-        icon={faPenToSquare}
-        className="info-icon"
-        onClick={(e: any) => {
-          setProfileModalVisible(true);
-        }}
-      />
-      <button
-        onClick={connectToMetaMask}
-        disabled={currentAccount !== ''}
-        className="metamask-button"
-      >
-        {ethprovider === undefined ? `Connect to Metamask` : currentAccount}
-      </button>
+      <div className="account-div">
+        {match?.pathname === '/profile' ? (
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            className="info-icon"
+            onClick={(e: any) => {
+              setProfileModalVisible(true);
+            }}
+          />
+        ) : (
+          <></>
+        )}
+        <button
+          onClick={connectToMetaMask}
+          disabled={currentAccount !== ''}
+          className="metamask-button"
+        >
+          {ethprovider === undefined ? `Connect to Metamask` : currentAccount}
+        </button>
+      </div>
       <Link to="/profile">
-        <img className="profile-pic" src={metadata.profilepic === '' ? EMPTY_PROFILE_PICTURE : getIpfsURL(metadata.profilepic)}></img>
+        <img
+          className="profile-pic"
+          src={metadata.profilepic === '' ? EMPTY_PROFILE_PICTURE : getIpfsURL(metadata.profilepic)}
+        ></img>
       </Link>
     </div>
   );
