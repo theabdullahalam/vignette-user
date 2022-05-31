@@ -40,15 +40,18 @@ export default function HomePage({
 
   useEffect(() => {
     loadSectionPhotos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSection]);
 
   useEffect(() => {
     setIsSubscribed(getIsSubscribed(enteredAddress));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enteredAddress]);
 
   useEffect(() => {
-    setEmptyPromptState()    
-  }, [current_account, photographs])
+    setEmptyPromptState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current_account, photographs]);
 
   const loadSectionPhotos = () => {
     setPhotographs([]);
@@ -123,7 +126,7 @@ export default function HomePage({
       return 'Connect to Metamask to view photographs...';
     }
     const chainId: string = await window.ethereum.request({ method: 'eth_chainId' });
-    if (chainId !== '0x3' && chainId !== '0x4'){
+    if (chainId !== '0x3' && chainId !== '0x4') {
       return 'Are you sure you are connected to Rinkeby or Ropsten?';
     }
     if (photographs.length === 0) {
@@ -134,7 +137,7 @@ export default function HomePage({
   const setEmptyPromptState = async () => {
     const prompt = await getEmptyPrompt();
     setEmptyPrompt(prompt || '');
-  }
+  };
 
   const fetchSubscriptionPhotographs = async () => {
     if (ethprovider !== undefined) {
@@ -167,24 +170,30 @@ export default function HomePage({
         <a
           className={currentSection === 'latest' ? 'selected' : ''}
           onClick={(e: any) => {
+            e.preventDefault();
             setCurrentSection('latest');
           }}
+          href="/#"
         >
           Latest
         </a>
         <a
           className={currentSection === 'subscriptions' ? 'selected' : ''}
           onClick={(e: any) => {
+            e.preventDefault();
             setCurrentSection('subscriptions');
           }}
+          href="/#"
         >
           Subscriptions
         </a>
         <a
           className={currentSection === 'view-account' ? 'selected' : ''}
           onClick={(e: any) => {
+            e.preventDefault();
             setCurrentSection('view-account');
           }}
+          href="/#"
         >
           View Account
         </a>
@@ -229,7 +238,7 @@ export default function HomePage({
             </button>
           </div>
 
-          {photographs.length > 0 && enteredAddress != '' ? (
+          {photographs.length > 0 && enteredAddress !== '' ? (
             <ProfileSection account={enteredAddress} ethprovider={ethprovider} />
           ) : (
             <></>
