@@ -1,8 +1,6 @@
 import '../styles/Feed.scss';
 import MasonryContainer from './Masonry';
 import { getIpfsURL } from '../helpers';
-import lozad from 'lozad';
-import { useEffect } from 'react';
 
 interface PhotographProps {
   photographs: any;
