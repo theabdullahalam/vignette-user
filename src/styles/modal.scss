@@ -7,11 +7,28 @@
   top: 0;
   left: 0;
   display: grid;
-
+  overflow-y: scroll;
+  
   .is-modal {
     
+    overflow-y: scroll;
     max-width: 50%;
     place-self: center center;
+
+    @media screen and (max-width: 1175px) {
+      max-width: 70%;
+    }
+
+    @media screen and (max-width: 800px) {
+      max-width: 85%;
+    }
+
+    @media screen and (max-width: 550px) {
+      width: 95%;
+      max-width: unset;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
     
   
   }
