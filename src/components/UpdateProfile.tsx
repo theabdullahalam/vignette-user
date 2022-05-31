@@ -52,7 +52,6 @@ export default function ({
     setAccountContact(metadata.contact === undefined ? '' : metadata.contact);
     setAccountLocation(metadata.location === undefined ? '' : metadata.location);
     setAccountPicCid(metadata.profilepic === undefined ? '' : metadata.profilepic);
-    console.log(metadata);
   }, [metadata]);
 
   useEffect(() => {
@@ -103,7 +102,7 @@ export default function ({
   const updateAccount = async (e: any) => {
     e.preventDefault();
     setIsUploading(true);
-    let profile_pic_cid;
+    let profile_pic_cid: string | undefined = metadata.profilepic;
 
     // upload profile pic
     if (uploadedFile !== undefined) {
@@ -111,7 +110,7 @@ export default function ({
       setAccountPicCid(profile_pic_cid === undefined ? '' : profile_pic_cid);
     }
 
-    const metadata = {
+    const _metadata = {
       name: accountName,
       website: accountWebsite,
       contact: accountContact,
@@ -119,7 +118,7 @@ export default function ({
       profilepic: profile_pic_cid
     };
 
-    const metadata_url = await uploadMetadata(metadata);
+    const metadata_url = await uploadMetadata(_metadata);
 
     if (ethSigner !== undefined) {
       const vignette_address = await getVignetteAddress();
